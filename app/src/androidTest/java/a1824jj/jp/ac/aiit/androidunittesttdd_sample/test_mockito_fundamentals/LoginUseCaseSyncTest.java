@@ -4,8 +4,11 @@ import android.accounts.NetworkErrorException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 import java.util.List;
@@ -17,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class LoginUseCaseSyncTest {
 
     private static final String USERNAME = "username";
@@ -25,19 +29,14 @@ public class LoginUseCaseSyncTest {
 
     LoginUseCaseSync SUT;
 
-    LoginHttpEndpointSync mLoginHttpEndpointSyncMock;
-    AuthTokenCache mAuthTokenCacheMock;
-    EventBusPoster mEventBusPosterMock;
+    @Mock LoginHttpEndpointSync mLoginHttpEndpointSyncMock;
+    @Mock AuthTokenCache mAuthTokenCacheMock;
+    @Mock EventBusPoster mEventBusPosterMock;
 
     @Before
     public void setup() throws Exception{
-        mLoginHttpEndpointSyncMock = Mockito.mock(LoginHttpEndpointSync.class);
-        mAuthTokenCacheMock = Mockito.mock(AuthTokenCache.class);
-        mEventBusPosterMock = Mockito.mock(EventBusPoster.class);
-
         SUT = new LoginUseCaseSync(mLoginHttpEndpointSyncMock, mAuthTokenCacheMock, mEventBusPosterMock);
         success();
-
     }
 
     private void success() throws Exception {
