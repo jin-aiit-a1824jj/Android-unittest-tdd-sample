@@ -61,8 +61,7 @@ public class LoginUseCaseSyncTest {
         ArgumentCaptor<String> ac = ArgumentCaptor.forClass(String.class);
         SUT.loginSync(USERNAME, PASSWORD);
         verify(mAuthTokenCacheMock).cacheAuthToken(ac.capture());
-        String e = ac.capture();
-        assertThat(ac.capture(), is(AUTH_TOKEN));
+        assertThat(ac.getValue(), is(AUTH_TOKEN));
     }
 
     @Test
@@ -106,7 +105,7 @@ public class LoginUseCaseSyncTest {
         ArgumentCaptor<Object> ac = ArgumentCaptor.forClass(Object.class);
         SUT.loginSync(USERNAME, PASSWORD);
         verify(mEventBusPosterMock).postEvent(ac.capture());
-        assertThat(ac.capture(), is(instanceOf(LoggedInEvent.class)));
+        assertThat(ac.getValue(), is(instanceOf(LoggedInEvent.class)));
     }
 
     @Test
