@@ -21,6 +21,10 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
 }
 
 dependencies {
@@ -31,6 +35,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    // Optional -- Mockito framework
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    //https://stackoverflow.com/questions/47282198/how-to-set-up-mockito-for-kotlin-and-android
+    // required if you want to use Mockito for unit tests
+    testImplementation 'org.mockito:mockito-core:2.24.5'
+    // required if you want to use Mockito for Android tests
+    androidTestImplementation 'org.mockito:mockito-android:2.24.5'
 }
