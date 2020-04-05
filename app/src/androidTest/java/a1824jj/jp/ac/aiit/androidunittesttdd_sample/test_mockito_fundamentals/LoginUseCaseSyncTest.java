@@ -58,10 +58,21 @@ public class LoginUseCaseSyncTest {
 
     @Test
     public void loginSync_success_authTokenCached() throws Exception {
+        // Arrange
         ArgumentCaptor<String> ac = ArgumentCaptor.forClass(String.class);
+        // Act
         SUT.loginSync(USERNAME, PASSWORD);
+        // Assert
         verify(mAuthTokenCacheMock).cacheAuthToken(ac.capture());
         assertThat(ac.getValue(), is(AUTH_TOKEN));
+    }
+
+    // Generate -> Test Method -> Edit template (add template)
+    @Test
+    public void name() {
+        // Arrange
+        // Act
+        // Assert
     }
 
     @Test
