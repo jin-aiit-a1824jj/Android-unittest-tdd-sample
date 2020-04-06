@@ -16,6 +16,7 @@ import java.util.List;
 import a1824jj.jp.ac.aiit.androidunittesttdd_sample.unit_test_android3.networking.StackoverflowApi;
 import a1824jj.jp.ac.aiit.androidunittesttdd_sample.unit_test_android3.networking.questions.FetchLastActiveQuestionsEndpoint;
 import a1824jj.jp.ac.aiit.androidunittesttdd_sample.unit_test_android3.networking.questions.QuestionSchema;
+import a1824jj.jp.ac.aiit.androidunittesttdd_sample.unit_test_android3.testdata.QuestionsTestData;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class FetchLastActiveQuestionsUseCaseTest {
 
     // region constants
-
+    private static final List<Question> QUESTIONS = QuestionsTestData.getQuestions();
     // endregion constants
 
     // region helper fields
@@ -61,8 +62,8 @@ public class FetchLastActiveQuestionsUseCaseTest {
         verify(mListener2).onLastActiveQuestionsFetched(mQuestionsCaptor.capture());
 
         List<List<Question>> questionLists = mQuestionsCaptor.getAllValues();
-        assertThat(questionLists.get(0), is(getExceptedQuestions()));
-        assertThat(questionLists.get(1), is(getExceptedQuestions()));
+        assertThat(questionLists.get(0), is(QUESTIONS));
+        assertThat(questionLists.get(1), is(QUESTIONS));
     }
 
 
@@ -83,14 +84,6 @@ public class FetchLastActiveQuestionsUseCaseTest {
     private void success() {
         //not use now
     }
-
-    private List<Question> getExceptedQuestions() {
-        List<Question> questionSchemas = new LinkedList<>();
-        questionSchemas.add(new Question("id1","title1"));
-        questionSchemas.add(new Question("id2","title2"));
-        return questionSchemas;
-    }
-
 
     private void failure() {
         mEndpointTd.failure = true;

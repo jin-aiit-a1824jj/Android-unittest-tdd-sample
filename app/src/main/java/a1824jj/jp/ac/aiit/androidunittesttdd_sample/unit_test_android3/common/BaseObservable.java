@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import a1824jj.jp.ac.aiit.androidunittesttdd_sample.unit_test_android3.screens.QuestionsListController;
+
 public abstract class BaseObservable<LISTENER_CLASS> {
 
     // thread-safe set of listeners
