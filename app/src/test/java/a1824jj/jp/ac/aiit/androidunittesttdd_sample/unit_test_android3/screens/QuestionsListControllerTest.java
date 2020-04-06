@@ -152,7 +152,35 @@ public class QuestionsListControllerTest {
         verify(mQuestionsListViewMvc).hideProgressIndication();
     }
 
-    // region helper methods
+    @Test
+    public void onStart_secondTimeAfterCachingTimeout_questionsBoundToViewFromUseCase() throws Exception {
+        // Arrange
+        emptyQuestionsListOnFirstCall();
+        when(mTimeProvider.getCurrentTimestamp()).thenReturn(0l);
+        // Act
+        SUT.onStart();
+        SUT.onStop();
+        when(mTimeProvider.getCurrentTimestamp()).thenReturn(10000l);
+        SUT.onStart();
+        // Assert
+        verify(mQuestionsListViewMvc).bindQuestions(QUESTIONS);
+    }
+
+    @Test
+    public void onStart_secondTimeRightBeforeCachingTimeout_questionsBoundToViewFromCache() throws Exception {
+        // Arrange
+        when(mTimeProvider.getCurrentTimestamp()).thenReturn(0l);
+        // Act
+        SUT.onStart();
+        SUT.onStop();
+        when(mTimeProvider.getCurrentTimestamp()).thenReturn(9999l);
+        SUT.onStart();
+        // Assert
+        verify(mQuestionsListViewMvc, times(2)).bindQuestions(QUESTIONS);
+        assertThat(mUseCaseTd.getCallCount(), is(1));
+    }
+
+     // region helper methods
 
     private void success() {
         //not use now
@@ -162,12 +190,18 @@ public class QuestionsListControllerTest {
         mUseCaseTd.mFailure = true;
     }
 
+    private void emptyQuestionsListOnFirstCall() {
+
+        mUseCaseTd.mEmptyListOnFirstCall = true;
+    }
+
     // endregion helper methods
 
     // region helper classes
 
     private static class UseCaseTd extends FetchLastActiveQuestionsUseCase {
         public boolean mFailure;
+        public boolean mEmptyListOnFirstCall;
         private int mCallCount;
 
         public UseCaseTd() {
@@ -180,8 +214,13 @@ public class QuestionsListControllerTest {
             for (FetchLastActiveQuestionsUseCase.Listener listener: getListeners()){
                 if (mFailure)
                     listener.onLastActiveQuestionsFetchFailed();
-                else
-                    listener.onLastActiveQuestionsFetched(QUESTIONS);
+                else{
+                    if (mEmptyListOnFirstCall && mCallCount == 1){
+                        listener.onLastActiveQuestionsFetched(new LinkedList<Question>());
+                    } else {
+                        listener.onLastActiveQuestionsFetched(QUESTIONS);
+                    }
+                }
             }
         }
 
