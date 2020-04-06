@@ -29,7 +29,7 @@ public class LoginUseCaseSyncTest_createby_template {
 
     @Before
     public void setup() throws Exception {
-        SUT = new a1824jj.jp.ac.aiit.androidunittesttdd_sample.test_doubles_fundamentals.LoginUseCaseSync();
+        //SUT = new a1824jj.jp.ac.aiit.androidunittesttdd_sample.test_doubles_fundamentals.LoginUseCaseSync();
 
     }
 
